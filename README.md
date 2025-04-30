@@ -1,6 +1,6 @@
 # Fast Cursor Typer
 
-[Click here to open](jonasloos.github.io/fast-cursor-typing/)
+[Click here to open](https://jonasloos.github.io/fast-cursor-typing/)
 
 [fast-cursor-typing.webm](https://github.com/user-attachments/assets/22a6985e-fce3-448d-8adc-eadf83e47392)
 
@@ -25,7 +25,7 @@ A simple web-based application that allows you to type text using directional mo
 
 ## How to Use
 
-1.  [Click here]( jonasloos.github.io/fast-cursor-typing/)
+1.  [Click here](https://jonasloos.github.io/fast-cursor-typing/)
 2.  Click the central button to begin.
 3.  Perform sequences of three directional mouse movements to type characters.
 4.  Click outside the button or press `Esc` to finish.
