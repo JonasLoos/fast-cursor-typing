@@ -204,7 +204,7 @@
             50% { opacity: 0.5; }
             100% { opacity: 1; }
         }
-        
+
         /* Options Card Header */
         .options-card-header {
             display: flex;
@@ -232,7 +232,7 @@
         .options-card-header.collapsed .toggle-icon {
              transform: rotate(-90deg);
         }
-        
+
         /* Options Textarea */
         .options-card-content textarea {
             width: 100%;
@@ -262,6 +262,23 @@
         .char-set-warning.visible {
             display: block;
         }
+
+        /* Output Action Buttons */
+        .output-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem 0.5rem 1rem; /* Padding only bottom and sides */
+            border-top: 1px solid #e5e7eb; /* Separator */
+        }
+
+        .button-small {
+            height: auto; /* Override default height */
+            width: auto; /* Override default width */
+            padding: 0.25rem 0.75rem; /* Smaller padding */
+            font-size: 0.875rem; /* Standard font size */
+            line-height: 1.25rem;
+        }
     </style>
 </head>
 <body>
@@ -279,6 +296,10 @@
         <div class="card">
             <div class="card-content output-card-content">
                 <pre disabled id="output-display"></pre><span class="cursor-indicator">|</span>
+            </div>
+            <div class="output-actions">
+                <button id="btn-copy" class="button button-small button-secondary">Copy</button>
+                <button id="btn-clear" class="button button-small button-secondary">Clear</button>
             </div>
         </div>
 
@@ -371,6 +392,8 @@
         const optionsContent = document.getElementById("options-content");
         const charSetInput = document.getElementById("char-set-input");
         const charSetWarning = document.getElementById("char-set-warning");
+        const copyButton = document.getElementById("btn-copy");
+        const clearButton = document.getElementById("btn-clear");
 
         // HELPERS
         const dirToIndex = (d) => dirOrder.indexOf(d);
@@ -460,6 +483,29 @@
                 path = [];
             }
             updateUI();
+        };
+
+        // COPY FUNCTIONALITY
+        const copyOutput = async () => {
+            if (!output) return; // Don't copy if empty
+            try {
+                await navigator.clipboard.writeText(output);
+                copyButton.textContent = 'Copied!';
+                setTimeout(() => {
+                    copyButton.textContent = 'Copy';
+                }, 1500); // Reset text after 1.5 seconds
+            } catch (err) {
+                console.error('Failed to copy text: ', err);
+                // Optionally show an error message to the user
+            }
+        };
+
+        // CLEAR FUNCTIONALITY
+        const clearOutput = () => {
+            if (output && window.confirm("Are you sure you want to clear the output?")) {
+                output = "";
+                updateUI();
+            }
         };
 
         // KEYBOARD INPUT
@@ -625,6 +671,10 @@
             }, 100); // 100ms delay
 
             charSetInput.addEventListener("input", updateCharSetFromInput);
+
+            // Add listeners for copy/clear buttons
+            copyButton.addEventListener("click", copyOutput);
+            clearButton.addEventListener("click", clearOutput);
 
             // Initial UI Setup
             charSetInput.value = rawSet; // Populate textarea
