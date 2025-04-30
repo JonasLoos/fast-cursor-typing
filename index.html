@@ -393,6 +393,9 @@
         let threshold = 50;
         let accum = { x: 0, y: 0 };
         let flashTimeout = null;
+        // localStorage keys
+        const LS_THRESHOLD_KEY = 'fastCursorTyper_threshold';
+        const LS_CHARSET_KEY = 'fastCursorTyper_charSet';
 
         // DOM Elements
         const centreButton = document.getElementById("btn-centre");
@@ -675,6 +678,16 @@
 
         // INITIALIZATION
         function init() {
+             // Load settings from localStorage
+             const savedThreshold = localStorage.getItem(LS_THRESHOLD_KEY);
+             if (savedThreshold !== null) {
+                 threshold = Number(savedThreshold);
+             }
+             const savedCharSet = localStorage.getItem(LS_CHARSET_KEY);
+             if (savedCharSet !== null) {
+                 rawSet = savedCharSet; // Load the raw string, it will be processed later
+             }
+
              // Add Event Listeners
             document.addEventListener("pointerlockchange", onLockChange);
             document.addEventListener("pointerlockerror", onLockError);
@@ -689,6 +702,7 @@
 
             thresholdSlider.addEventListener("input", (e) => {
                 threshold = Number(e.target.value);
+                localStorage.setItem(LS_THRESHOLD_KEY, threshold); // Save threshold
                 updateUI(); // Update threshold display immediately
             });
 
@@ -722,6 +736,7 @@
 
                 if (newRawSet !== rawSet) {
                     rawSet = newRawSet;
+                    localStorage.setItem(LS_CHARSET_KEY, rawSet); // Save raw character set
                     calculateCharSet(); // Recalculate the padded set
                     updateUI(); // Update button texts etc.
                 }
@@ -735,7 +750,7 @@
 
             // Initial UI Setup
             charSetInput.value = escapeString(rawSet); // Populate textarea
-            threshold = Number(thresholdSlider.value);
+            thresholdSlider.value = threshold; // Set slider initial position
             thresholdValue.textContent = threshold;
             checkCharSetLength(rawSet); // Initial check for warning
             calculateCharSet(); // Calculate initial padded charSet
