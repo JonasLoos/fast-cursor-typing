@@ -266,7 +266,7 @@
         /* Output Action Buttons */
         .output-actions {
             display: flex;
-            justify-content: flex-end;
+            justify-content: space-between;
             gap: 0.5rem;
             padding: 0.5rem 1rem 0.5rem 1rem; /* Padding only bottom and sides */
             border-top: 1px solid #e5e7eb; /* Separator */
@@ -298,8 +298,8 @@
                 <pre disabled id="output-display"></pre><span class="cursor-indicator">|</span>
             </div>
             <div class="output-actions">
-                <button id="btn-copy" class="button button-small button-secondary">Copy</button>
                 <button id="btn-clear" class="button button-small button-secondary">Clear</button>
+                <button id="btn-copy" class="button button-small button-secondary">Copy</button>
             </div>
         </div>
 
@@ -346,7 +346,7 @@
             <div class="card-content options-card-content collapsed" id="options-content">
                 <label>
                     <span>Sensitivity (pixels): <span id="threshold-value">25</span></span>
-                    <input id="threshold-slider" type="range" min="5" max="50" step="1" value="25">
+                    <input id="threshold-slider" type="range" min="1" max="50" step="1" value="25">
                 </label>
                 <label>
                     <span>Available Characters:</span>
@@ -678,6 +678,8 @@
 
             // Initial UI Setup
             charSetInput.value = rawSet; // Populate textarea
+            threshold = Number(thresholdSlider.value);
+            thresholdValue.textContent = threshold;
             checkCharSetLength(rawSet); // Initial check for warning
             calculateCharSet(); // Calculate initial padded charSet
             updateUI();
