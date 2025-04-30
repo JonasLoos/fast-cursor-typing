@@ -1,6 +1,6 @@
 # Fast Cursor Typer
 
-[![](TODO)](TODO)
+[![](TODO)](jonasloos.github.io/fast-cursor-typing/)
 
 A simple web-based application that allows you to type text using directional mouse gestures. Move the mouse in a sequence of three directions (up, down, left, or right) relative to a starting point to select and type a character.
 
@@ -23,7 +23,7 @@ A simple web-based application that allows you to type text using directional mo
 
 ## How to Use
 
-1.  [Click here](TODO)
+1.  [Click here]( jonasloos.github.io/fast-cursor-typing/)
 2.  Click the central button to begin.
 3.  Perform sequences of three directional mouse movements to type characters.
 4.  Click outside the button or press `Esc` to finish.
