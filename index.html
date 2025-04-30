@@ -345,8 +345,8 @@
             </div>
             <div class="card-content options-card-content collapsed" id="options-content">
                 <label>
-                    <span>Sensitivity (pixels): <span id="threshold-value">25</span></span>
-                    <input id="threshold-slider" type="range" min="1" max="100" step="1" value="25">
+                    <span>Sensitivity (pixels): <span id="threshold-value">50</span></span>
+                    <input id="threshold-slider" type="range" min="1" max="100" step="1" value="50">
                 </label>
                 <label>
                     <span>Available Characters (Supports \n, \t, \b, \\):</span>
@@ -372,7 +372,7 @@
         let softCap = false; // Pointer lock fallback mode
         let progress = { up: 0, right: 0, down: 0, left: 0 };
         let flashDir = null;
-        let threshold = 25;
+        let threshold = 50;
         let accum = { x: 0, y: 0 };
         let flashTimeout = null;
 
