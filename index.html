@@ -73,6 +73,12 @@
             color: #111827;
         }
 
+        #output-display {
+            display: inline;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
         /* Pad Grid Layout */
         .pad-grid {
             display: grid;
@@ -187,6 +193,17 @@
         .empty-placeholder {
             color: #9ca3af;
         }
+
+        .cursor-indicator {
+            color: #9ca3af;
+            animation: blink 1.5s ease-in-out infinite;
+            animation-delay: 0.5s;
+        }
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
         
         /* Options Card Header */
         .options-card-header {
@@ -260,8 +277,8 @@
 
         <!-- OUTPUT -->
         <div class="card">
-            <div id="output-display" class="card-content output-card-content">
-                <span class="empty-placeholder">&lt;&lt;typed text&gt;&gt;</span>
+            <div class="card-content output-card-content">
+                <pre disabled id="output-display"></pre><span class="cursor-indicator">|</span>
             </div>
         </div>
 
@@ -313,7 +330,7 @@
                 <label>
                     <span>Available Characters:</span>
                     <textarea id="char-set-input"></textarea>
-                    <p id="char-set-warning" class="char-set-warning">Warning: Character set is not fully defined, remaining characters will be filled with '·'.</p>
+                    <p id="char-set-warning" class="char-set-warning">Warning: Character set is not fully defined, remaining characters will be filled with ' '.</p>
                 </label>
             </div>
         </div>
@@ -368,7 +385,7 @@
         // Calculates the full charSet based on rawSet and padding
         const calculateCharSet = () => {
             const requiredLength = 4 ** movesPerChar;
-            charSet = rawSet.slice(0, requiredLength).padEnd(requiredLength, "·");
+            charSet = rawSet.slice(0, requiredLength).padEnd(requiredLength, " ");
         };
 
         // Debounce function
@@ -439,9 +456,7 @@
 
             if (path.length === movesPerChar) {
                 const ch = charSet[indexForPath(path)];
-                if (ch !== '·') { // Don't add padding char
-                  output += ch;
-                }
+                output += ch;
                 path = [];
             }
             updateUI();
