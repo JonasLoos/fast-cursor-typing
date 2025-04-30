@@ -246,6 +246,7 @@
             font-size: 0.875rem;
              color: #374151;
             transition: border-color 0.2s ease-in-out; /* Smooth border transition */
+            display: block;
         }
         .options-card-content textarea.warning {
             border-color: #f59e0b; /* yellow-400 */
@@ -292,6 +293,17 @@
         footer a {
             color: #8f96a6;
             text-decoration: none;
+        }
+
+        /* Reset Button Specific Style */
+        #reset-settings {
+            align-self: flex-end; /* Align button to the right */
+            margin-top: 0.5rem; /* Add some space above the button */
+        }
+        #reset-settings:hover {
+             background-color: #fee2e2; /* Lighter red on hover */
+             border-color: #ef4444; /* Red border on hover */
+             color: #b91c1c; /* Darker red text on hover */
         }
     </style>
 </head>
@@ -367,6 +379,7 @@
                     <textarea id="char-set-input"></textarea>
                     <p id="char-set-warning" class="char-set-warning">Warning: Character set is not fully defined, remaining characters will be filled with ' '.</p>
                 </label>
+                <button id="reset-settings" class="button button-small button-secondary">Reset Settings</button>
             </div>
         </div>
 
@@ -378,10 +391,9 @@
     <script>
         // CONFIG
         const movesPerChar = 3;
-        let rawSet =
-            "abcdefghijklmnopqrstuvwxyz0123456789\n,.!?-@#$%&*;:'\"/()[]{}<>\0";
-        let charSet = ''; // Will be calculated initially and on update
         const dirOrder = ["up", "right", "down", "left"];
+        const defaultThreshold = 50;
+        const defaultRawSet = "abcdefghijklmnopqrstuvwxyz0123456789\n,.!?-@#$%&*;:'\"/()[]{}<>\0";
 
         // STATE
         let path = [];
@@ -390,7 +402,9 @@
         let softCap = false; // Pointer lock fallback mode
         let progress = { up: 0, right: 0, down: 0, left: 0 };
         let flashDir = null;
-        let threshold = 50;
+        let threshold = defaultThreshold; // Start with default
+        let rawSet = defaultRawSet; // Start with default
+        let charSet = ''; // Will be calculated initially and on update
         let accum = { x: 0, y: 0 };
         let flashTimeout = null;
         // localStorage keys
@@ -415,6 +429,7 @@
         const charSetWarning = document.getElementById("char-set-warning");
         const copyButton = document.getElementById("btn-copy");
         const clearButton = document.getElementById("btn-clear");
+        const resetSettingsButton = document.getElementById("reset-settings");
 
         // HELPERS
         const unescapeString = str => str.split('').reduce(([escaped, acc], char) => {
@@ -747,6 +762,27 @@
             // Add listeners for copy/clear buttons
             copyButton.addEventListener("click", copyOutput);
             clearButton.addEventListener("click", clearOutput);
+
+            // Reset Settings Button
+            resetSettingsButton.addEventListener("click", () => {
+                if (window.confirm("Are you sure you want to reset settings to default?")) {
+                    threshold = defaultThreshold;
+                    rawSet = defaultRawSet;
+
+                    // Update inputs
+                    thresholdSlider.value = threshold;
+                    charSetInput.value = escapeString(rawSet);
+
+                    // Clear storage
+                    localStorage.removeItem(LS_THRESHOLD_KEY);
+                    localStorage.removeItem(LS_CHARSET_KEY);
+
+                    // Recalculate and update UI
+                    checkCharSetLength(rawSet); // Update warning state
+                    calculateCharSet();
+                    updateUI();
+                }
+            });
 
             // Initial UI Setup
             charSetInput.value = escapeString(rawSet); // Populate textarea
