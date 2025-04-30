@@ -5,306 +5,306 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fast Cursor Typer</title>
     <style>
-        /* Basic Reset & Font */
-        body {
-            font-family: sans-serif;
-            margin: 0;
-            padding: 1rem;
-            background-color: #f9fafb;
-            color: #111827;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start; /* Align to top */
-            min-height: 100vh;
-        }
+/* Basic Reset & Font */
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 1rem;
+    background-color: #f9fafb;
+    color: #111827;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Align to top */
+    min-height: 100vh;
+}
 
-        * {
-            box-sizing: border-box;
-        }
+* {
+    box-sizing: border-box;
+}
 
-        /* Layout Container */
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem;
-            max-width: 40rem; /* User adjusted */
-            margin: 0 auto;
-            user-select: none;
-            width: 100%;
-        }
+/* Layout Container */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    max-width: 40rem; /* User adjusted */
+    margin: 0 auto;
+    user-select: none;
+    width: 100%;
+}
 
-        /* Card Base Style */
-        .card {
-            background-color: #fff;
-            border: 1px solid #e5e7eb;
-            border-radius: 0.5rem;
-            width: 100%;
-            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-        }
+/* Card Base Style */
+.card {
+    background-color: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    width: 100%;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
 
-        .card-content {
-            padding: 1rem;
-        }
+.card-content {
+    padding: 1rem;
+}
 
-        /* Specific Card Contents */
-        .info-card-content {
-            padding: 0.75rem;
-            display: flex;
-            gap: 0.5rem;
-            font-size: 0.875rem;
-            line-height: 1.25rem;
-            color: #374151;
-        }
-        .info-card-content p {
-            margin: 0; /* Remove default paragraph margin */
-        }
-        /* Removed Info SVG specific style - handled by .icon */
+/* Specific Card Contents */
+.info-card-content {
+    padding: 0.75rem;
+    display: flex;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    color: #374151;
+}
+.info-card-content p {
+    margin: 0; /* Remove default paragraph margin */
+}
+/* Removed Info SVG specific style - handled by .icon */
 
-        .output-card-content {
-            font-size: 1.25rem;
-            font-family: monospace;
-            word-break: break-words;
-            min-height: 3rem;
-            color: #6b7280; /* Default text color */
-        }
-        .output-card-content.has-content {
-            color: #111827;
-        }
+.output-card-content {
+    font-size: 1.25rem;
+    font-family: monospace;
+    word-break: break-words;
+    min-height: 3rem;
+    color: #6b7280; /* Default text color */
+}
+.output-card-content.has-content {
+    color: #111827;
+}
 
-        #output-display {
-            display: inline;
-            white-space: pre-wrap;
-            word-break: break-all;
-        }
+#output-display {
+    display: inline;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
 
-        /* Pad Grid Layout */
-        .pad-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-template-rows: repeat(3, 1fr);
-            gap: 0.5rem;
-        }
+/* Pad Grid Layout */
+.pad-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 0.5rem;
+}
 
-        /* General Button Style */
-        .button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 0.375rem;
-            padding: 0.5rem 1rem;
-            font-size: 0.875rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
-            border: 1px solid transparent;
-            height: 6rem;
-            width: 6rem;
-            flex-direction: column;
-            gap: 0.25rem;
-            font-size: 1.5rem;
-            line-height: 2rem;
-        }
-        .button:focus {
-            outline: 2px solid transparent;
-            outline-offset: 2px;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
-        }
-        .button.disabled, .button:disabled {
-            opacity: 0.7;
-            cursor: default;
-        }
+/* General Button Style */
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.375rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
+    border: 1px solid transparent;
+    height: 6rem;
+    width: 6rem;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 1.5rem;
+    line-height: 2rem;
+}
+.button:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+}
+.button.disabled, .button:disabled {
+    opacity: 0.7;
+    cursor: default;
+}
 
-        /* Button Variants */
-        .button-outline {
-            border: 1px solid #d1d5db;
-            background-color: transparent;
-            color: #374151;
-        }
-         .button-outline.active {
-             border-width: 4px;
-             /* border-color set in JS */
-         }
-         .button-outline.flash {
-             border-width: 4px;
-             /* border-color set in JS */
-         }
-         .button-outline .button-text {
-             font-size: 0.75rem;
-             line-height: 1rem;
-             word-break: break-all;
-             white-space: pre-wrap;
-             text-align: center;
-             color: #6b7280;
-         }
+/* Button Variants */
+.button-outline {
+    border: 1px solid #d1d5db;
+    background-color: transparent;
+    color: #374151;
+}
+    .button-outline.active {
+        border-width: 4px;
+        /* border-color set in JS */
+    }
+    .button-outline.flash {
+        border-width: 4px;
+        /* border-color set in JS */
+    }
+    .button-outline .button-text {
+        font-size: 0.75rem;
+        line-height: 1rem;
+        word-break: break-all;
+        white-space: pre-wrap;
+        text-align: center;
+        color: #6b7280;
+    }
 
-        .button-secondary {
-            background-color: #f3f4f6;
-            border: 4px solid transparent; /* Base for state borders */
-            color: #374151;
-        }
-        .button-secondary:hover {
-            background-color: #e5e7eb;
-        }
-        .button-secondary.locked {
-            border-color: #10b981; /* green-500 */
-        }
-        .button-secondary.soft-cap {
-             border-color: #f59e0b; /* yellow-400 */
-        }
+.button-secondary {
+    background-color: #f3f4f6;
+    border: 4px solid transparent; /* Base for state borders */
+    color: #374151;
+}
+.button-secondary:hover {
+    background-color: #e5e7eb;
+}
+.button-secondary.locked {
+    border-color: #10b981; /* green-500 */
+}
+.button-secondary.soft-cap {
+        border-color: #f59e0b; /* yellow-400 */
+}
 
-        /* Grid Positioning */
-        .pos-up    { grid-row-start: 1; grid-column-start: 2; }
-        .pos-right { grid-row-start: 2; grid-column-start: 3; }
-        .pos-down  { grid-row-start: 3; grid-column-start: 2; }
-        .pos-left  { grid-row-start: 2; grid-column-start: 1; }
-        .pos-center{ grid-row-start: 2; grid-column-start: 2; }
+/* Grid Positioning */
+.pos-up    { grid-row-start: 1; grid-column-start: 2; }
+.pos-right { grid-row-start: 2; grid-column-start: 3; }
+.pos-down  { grid-row-start: 3; grid-column-start: 2; }
+.pos-left  { grid-row-start: 2; grid-column-start: 1; }
+.pos-center{ grid-row-start: 2; grid-column-start: 2; }
 
-        /* Base Icon Style */
-        .icon {
-            width: 1.5rem;
-            height: 1.5rem;
-            stroke-width: 2;
-            stroke: currentColor;
-            fill: none;
-        }
+/* Base Icon Style */
+.icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    stroke-width: 2;
+    stroke: currentColor;
+    fill: none;
+}
 
-        /* Options Card Specifics */
-        .options-card-content {
-            padding: 1rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            font-size: 0.875rem;
-             color: #374151;
-        }
-        .options-card-content label {
-            display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
-        }
-        .options-card-content input[type="range"] {
-            width: 100%;
-            cursor: pointer;
-        }
+/* Options Card Specifics */
+.options-card-content {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    font-size: 0.875rem;
+        color: #374151;
+}
+.options-card-content label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+.options-card-content input[type="range"] {
+    width: 100%;
+    cursor: pointer;
+}
 
-        /* Helper for empty state in output */
-        .empty-placeholder {
-            color: #9ca3af;
-        }
+/* Helper for empty state in output */
+.empty-placeholder {
+    color: #9ca3af;
+}
 
-        .cursor-indicator {
-            color: #9ca3af;
-            animation: blink 1.5s ease-in-out infinite;
-            animation-delay: 0.5s;
-        }
-        @keyframes blink {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
-        }
+.cursor-indicator {
+    color: #9ca3af;
+    animation: blink 1.5s ease-in-out infinite;
+    animation-delay: 0.5s;
+}
+@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
 
-        /* Options Card Header */
-        .options-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.75rem 1rem;
-            cursor: pointer;
-            border-bottom: 1px solid #e5e7eb; /* Add separator */
-        }
-        .options-card-header h3 {
-            margin: 0;
-            font-size: 1rem;
-            font-weight: 500;
-             color: #374151;
-        }
-         .options-card-header .toggle-icon {
-            width: 1.25rem;
-            height: 1.25rem;
-            transition: transform 0.2s ease-in-out;
-            stroke: #6b7280;
-        }
-        .options-card-content.collapsed {
-            display: none;
-        }
-        .options-card-header.collapsed .toggle-icon {
-             transform: rotate(-90deg);
-        }
+/* Options Card Header */
+.options-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    border-bottom: 1px solid #e5e7eb; /* Add separator */
+}
+.options-card-header h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 500;
+        color: #374151;
+}
+    .options-card-header .toggle-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    transition: transform 0.2s ease-in-out;
+    stroke: #6b7280;
+}
+.options-card-content.collapsed {
+    display: none;
+}
+.options-card-header.collapsed .toggle-icon {
+        transform: rotate(-90deg);
+}
 
-        /* Options Textarea */
-        .options-card-content textarea {
-            width: 100%;
-            max-width: 100%;
-            min-width: 100%;
-            min-height: 3rem; /* Adjust as needed */
-            font-family: monospace;
-            border: 1px solid #d1d5db;
-            border-radius: 0.375rem;
-            padding: 0.5rem;
-            font-size: 0.875rem;
-             color: #374151;
-            transition: border-color 0.2s ease-in-out; /* Smooth border transition */
-            display: block;
-        }
-        .options-card-content textarea.warning {
-            border-color: #f59e0b; /* yellow-400 */
-            box-shadow: 0 0 0 1px #f59e0b; /* Add a subtle glow */
-        }
+/* Options Textarea */
+.options-card-content textarea {
+    width: 100%;
+    max-width: 100%;
+    min-width: 100%;
+    min-height: 3rem; /* Adjust as needed */
+    font-family: monospace;
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+    padding: 0.5rem;
+    font-size: 0.875rem;
+        color: #374151;
+    transition: border-color 0.2s ease-in-out; /* Smooth border transition */
+    display: block;
+}
+.options-card-content textarea.warning {
+    border-color: #f59e0b; /* yellow-400 */
+    box-shadow: 0 0 0 1px #f59e0b; /* Add a subtle glow */
+}
 
-        /* Character Set Warning Message */
-        .char-set-warning {
-            font-size: 0.75rem;
-            color: #f59e0b; /* yellow-400 */
-            margin: 0.25rem 0 0 0; /* Small top margin */
-            display: none; /* Hidden by default */
-        }
-        .char-set-warning.visible {
-            display: block;
-        }
+/* Character Set Warning Message */
+.char-set-warning {
+    font-size: 0.75rem;
+    color: #f59e0b; /* yellow-400 */
+    margin: 0.25rem 0 0 0; /* Small top margin */
+    display: none; /* Hidden by default */
+}
+.char-set-warning.visible {
+    display: block;
+}
 
-        /* Output Action Buttons */
-        .output-actions {
-            display: flex;
-            justify-content: space-between;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem 0.5rem 1rem; /* Padding only bottom and sides */
-            border-top: 1px solid #e5e7eb; /* Separator */
-        }
+/* Output Action Buttons */
+.output-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem 0.5rem 1rem; /* Padding only bottom and sides */
+    border-top: 1px solid #e5e7eb; /* Separator */
+}
 
-        .button-small {
-            height: auto; /* Override default height */
-            width: auto; /* Override default width */
-            padding: 0.25rem 0.75rem; /* Smaller padding */
-            font-size: 0.875rem; /* Standard font size */
-            line-height: 1.25rem;
-        }
+.button-small {
+    height: auto; /* Override default height */
+    width: auto; /* Override default width */
+    padding: 0.25rem 0.75rem; /* Smaller padding */
+    font-size: 0.875rem; /* Standard font size */
+    line-height: 1.25rem;
+}
 
-        footer {
-            color: #8f96a6;
-            text-align: center;
-            margin-top: 2rem;
-            padding: 1rem;
-            border-top: 1px solid #e5e7eb;
-            font-size: 0.875rem;
-        }
+footer {
+    color: #8f96a6;
+    text-align: center;
+    margin-top: 2rem;
+    padding: 1rem;
+    border-top: 1px solid #e5e7eb;
+    font-size: 0.875rem;
+}
 
-        footer a {
-            color: #8f96a6;
-            text-decoration: none;
-        }
+footer a {
+    color: #8f96a6;
+    text-decoration: none;
+}
 
-        /* Reset Button Specific Style */
-        #reset-settings {
-            align-self: flex-end; /* Align button to the right */
-            margin-top: 0.5rem; /* Add some space above the button */
-        }
-        #reset-settings:hover {
-             background-color: #fee2e2; /* Lighter red on hover */
-             border-color: #ef4444; /* Red border on hover */
-             color: #b91c1c; /* Darker red text on hover */
-        }
+/* Reset Button Specific Style */
+#reset-settings {
+    align-self: flex-end; /* Align button to the right */
+    margin-top: 0.5rem; /* Add some space above the button */
+}
+#reset-settings:hover {
+        background-color: #fee2e2; /* Lighter red on hover */
+        border-color: #ef4444; /* Red border on hover */
+        color: #b91c1c; /* Darker red text on hover */
+}
     </style>
 </head>
 <body>
@@ -389,412 +389,412 @@
     </div>
 
     <script>
-        // CONFIG
-        const movesPerChar = 3;
-        const dirOrder = ["up", "right", "down", "left"];
-        const defaultThreshold = 50;
-        const defaultRawSet = "abcdefghijklmnopqrstuvwxyz0123456789\n,.!?-@#$%&*;:'\"/()[]{}<>\0";
+// CONFIG
+const movesPerChar = 3;
+const dirOrder = ["up", "right", "down", "left"];
+const defaultThreshold = 50;
+const defaultRawSet = "abcdefghijklmnopqrstuvwxyz0123456789\n,.!?-@#$%&*;:'\"/()[]{}<>\0";
 
-        // STATE
-        let path = [];
-        let output = "";
-        let locked = false;
-        let softCap = false; // Pointer lock fallback mode
-        let progress = { up: 0, right: 0, down: 0, left: 0 };
-        let flashDir = null;
-        let threshold = defaultThreshold; // Start with default
-        let rawSet = defaultRawSet; // Start with default
-        let charSet = ''; // Will be calculated initially and on update
-        let accum = { x: 0, y: 0 };
-        let flashTimeout = null;
-        // localStorage keys
-        const LS_THRESHOLD_KEY = 'fastCursorTyper_threshold';
-        const LS_CHARSET_KEY = 'fastCursorTyper_charSet';
+// STATE
+let path = [];
+let output = "";
+let locked = false;
+let softCap = false; // Pointer lock fallback mode
+let progress = { up: 0, right: 0, down: 0, left: 0 };
+let flashDir = null;
+let threshold = defaultThreshold; // Start with default
+let rawSet = defaultRawSet; // Start with default
+let charSet = ''; // Will be calculated initially and on update
+let accum = { x: 0, y: 0 };
+let flashTimeout = null;
+// localStorage keys
+const LS_THRESHOLD_KEY = 'fastCursorTyper_threshold';
+const LS_CHARSET_KEY = 'fastCursorTyper_charSet';
 
-        // DOM Elements
-        const centreButton = document.getElementById("btn-centre");
-        const outputDisplay = document.getElementById("output-display");
-        const thresholdSlider = document.getElementById("threshold-slider");
-        const thresholdValue = document.getElementById("threshold-value");
-        const dirButtons = {};
-        const dirTexts = {};
-        dirOrder.forEach(dir => {
-            dirButtons[dir] = document.getElementById(`btn-${dir}`);
-            dirTexts[dir] = document.getElementById(`text-${dir}`);
-        });
-        const emptyPlaceholderHTML = '<span class="empty-placeholder">&lt;&lt;typed text&gt;&gt;</span>';
-        const optionsHeader = document.getElementById("options-header");
-        const optionsContent = document.getElementById("options-content");
-        const charSetInput = document.getElementById("char-set-input");
-        const charSetWarning = document.getElementById("char-set-warning");
-        const copyButton = document.getElementById("btn-copy");
-        const clearButton = document.getElementById("btn-clear");
-        const resetSettingsButton = document.getElementById("reset-settings");
+// DOM Elements
+const centreButton = document.getElementById("btn-centre");
+const outputDisplay = document.getElementById("output-display");
+const thresholdSlider = document.getElementById("threshold-slider");
+const thresholdValue = document.getElementById("threshold-value");
+const dirButtons = {};
+const dirTexts = {};
+dirOrder.forEach(dir => {
+    dirButtons[dir] = document.getElementById(`btn-${dir}`);
+    dirTexts[dir] = document.getElementById(`text-${dir}`);
+});
+const emptyPlaceholderHTML = '<span class="empty-placeholder">&lt;&lt;typed text&gt;&gt;</span>';
+const optionsHeader = document.getElementById("options-header");
+const optionsContent = document.getElementById("options-content");
+const charSetInput = document.getElementById("char-set-input");
+const charSetWarning = document.getElementById("char-set-warning");
+const copyButton = document.getElementById("btn-copy");
+const clearButton = document.getElementById("btn-clear");
+const resetSettingsButton = document.getElementById("reset-settings");
 
-        // HELPERS
-        const unescapeString = str => str.split('').reduce(([escaped, acc], char) => {
-            if (escaped) {
-                if (char === '\\') {
-                    return [false, acc];
-                } else if (char === 'n') {
-                    acc.push('\n');
-                } else if (char === 't') {
-                    acc.push('\t');
-                } else if (char === 'b') {
-                    acc.push('\0');  // backspace -> \0 (←)
-                } else {
-                    acc.push(char);
-                }
-            } else {
-                if (char === '\\') {
-                    return [true, acc];
-                } else {
-                    acc.push(char);
-                }
-            }
+// HELPERS
+const unescapeString = str => str.split('').reduce(([escaped, acc], char) => {
+    if (escaped) {
+        if (char === '\\') {
             return [false, acc];
-        }, [false, []])[1].join('');
+        } else if (char === 'n') {
+            acc.push('\n');
+        } else if (char === 't') {
+            acc.push('\t');
+        } else if (char === 'b') {
+            acc.push('\0');  // backspace -> \0 (←)
+        } else {
+            acc.push(char);
+        }
+    } else {
+        if (char === '\\') {
+            return [true, acc];
+        } else {
+            acc.push(char);
+        }
+    }
+    return [false, acc];
+}, [false, []])[1].join('');
 
-        const escapeString = (str) => {
-            return str.replace(/\\/g, '\\\\') // \ -> \\
-                      .replace(/\n/g, '\\n')  // newline -> \n
-                      .replace(/\t/g, '\\t')  // tab -> \t
-                      .replace(/\0/g, '\\b'); // backspace -> \b
-        };
+const escapeString = (str) => {
+    return str.replace(/\\/g, '\\\\') // \ -> \\
+                .replace(/\n/g, '\\n')  // newline -> \n
+                .replace(/\t/g, '\\t')  // tab -> \t
+                .replace(/\0/g, '\\b'); // backspace -> \b
+};
 
 
-        const dirToIndex = (d) => dirOrder.indexOf(d);
-        const indexForPath = (p) =>
-            p.reduce((a, d, i) => a + dirToIndex(d) * 4 ** (movesPerChar - i - 1), 0);
-        const groupChars = (d) => {
-            const start = indexForPath([...path, d]);
-            const chars = charSet.slice(start, start + 4 ** (movesPerChar - path.length - 1));
-            return chars || " ";
-        };
+const dirToIndex = (d) => dirOrder.indexOf(d);
+const indexForPath = (p) =>
+    p.reduce((a, d, i) => a + dirToIndex(d) * 4 ** (movesPerChar - i - 1), 0);
+const groupChars = (d) => {
+    const start = indexForPath([...path, d]);
+    const chars = charSet.slice(start, start + 4 ** (movesPerChar - path.length - 1));
+    return chars || " ";
+};
 
-        // Calculates the full charSet based on rawSet and padding
-        const calculateCharSet = () => {
-            const requiredLength = 4 ** movesPerChar;
-            charSet = rawSet.slice(0, requiredLength).padEnd(requiredLength, " ");
-        };
+// Calculates the full charSet based on rawSet and padding
+const calculateCharSet = () => {
+    const requiredLength = 4 ** movesPerChar;
+    charSet = rawSet.slice(0, requiredLength).padEnd(requiredLength, " ");
+};
 
-        // Debounce function
-        let debounceTimeout = null;
-        const debounce = (func, delay) => {
-            return function(...args) {
-                clearTimeout(debounceTimeout);
-                debounceTimeout = setTimeout(() => {
-                    func.apply(this, args);
-                }, delay);
-            };
-        };
+// Debounce function
+let debounceTimeout = null;
+const debounce = (func, delay) => {
+    return function(...args) {
+        clearTimeout(debounceTimeout);
+        debounceTimeout = setTimeout(() => {
+            func.apply(this, args);
+        }, delay);
+    };
+};
 
-        // UPDATE UI
-        function updateUI() {
-            // Update Output
-            if (output) {
-                outputDisplay.textContent = output;
-                outputDisplay.classList.add('has-content');
-            } else {
-                outputDisplay.innerHTML = emptyPlaceholderHTML;
-                outputDisplay.classList.remove('has-content');
+// UPDATE UI
+function updateUI() {
+    // Update Output
+    if (output) {
+        outputDisplay.textContent = output;
+        outputDisplay.classList.add('has-content');
+    } else {
+        outputDisplay.innerHTML = emptyPlaceholderHTML;
+        outputDisplay.classList.remove('has-content');
+    }
+
+    // Update Direction Buttons (Style & Text)
+    dirOrder.forEach((dir) => {
+        const btn = dirButtons[dir];
+        const textSpan = dirTexts[dir];
+        if (!btn) return; // Skip if button not found
+
+        const isActive = path.length > 0 && path[path.length - 1] === dir;
+        const isFlash = flashDir === dir;
+        const frac = progress[dir] || 0;
+
+        btn.classList.toggle("active", isActive); // Note: .active class doesn't have styles currently
+        btn.classList.toggle("flash", isFlash);
+        // Border color adjusted based on user edits (no active blue border)
+        btn.style.borderColor = isFlash ? "#10b981" : "#d1d5db";
+        btn.style.borderWidth = (isFlash || isActive) ? "4px" : "1px";
+        btn.style.backgroundColor = frac > 0 ? `rgba(59,130,246,${frac * 0.25})` : "transparent";
+
+        if (textSpan) {
+            textSpan.textContent = escapeString(groupChars(dir));
+        }
+    });
+
+    // Update Centre Button State
+    centreButton.classList.toggle("locked", locked);
+    centreButton.classList.toggle("soft-cap", softCap && !locked);
+
+    // Update Threshold Display
+    thresholdValue.textContent = threshold;
+}
+
+// ACCEPT MOVE
+const accept = (dir) => {
+    path.push(dir);
+    progress = { up: 0, right: 0, down: 0, left: 0 };
+    accum = {x: 0, y: 0};
+
+    // Flash effect
+    flashDir = dir;
+    clearTimeout(flashTimeout);
+    flashTimeout = setTimeout(() => {
+        flashDir = null;
+        updateUI();
+    }, 200);
+
+    if (path.length === movesPerChar) {
+        const ch = charSet[indexForPath(path)];
+        // Handle backspace
+        if (ch === '\0') {
+            if (output.length > 0) {
+                output = output.slice(0, -1);
             }
+        } else {
+            output += ch;
+        }
+        path = [];
+    }
+    updateUI();
+};
 
-            // Update Direction Buttons (Style & Text)
-            dirOrder.forEach((dir) => {
-                const btn = dirButtons[dir];
-                const textSpan = dirTexts[dir];
-                if (!btn) return; // Skip if button not found
+// COPY FUNCTIONALITY
+const copyOutput = async () => {
+    if (!output) return; // Don't copy if empty
+    try {
+        await navigator.clipboard.writeText(output);
+        copyButton.textContent = 'Copied!';
+        setTimeout(() => {
+            copyButton.textContent = 'Copy';
+        }, 1500); // Reset text after 1.5 seconds
+    } catch (err) {
+        console.error('Failed to copy text: ', err);
+        // Optionally show an error message to the user
+    }
+};
 
-                const isActive = path.length > 0 && path[path.length - 1] === dir;
-                const isFlash = flashDir === dir;
-                const frac = progress[dir] || 0;
+// CLEAR FUNCTIONALITY
+const clearOutput = () => {
+    if (output && window.confirm("Are you sure you want to clear the output?")) {
+        output = "";
+        updateUI();
+    }
+};
 
-                btn.classList.toggle("active", isActive); // Note: .active class doesn't have styles currently
-                btn.classList.toggle("flash", isFlash);
-                // Border color adjusted based on user edits (no active blue border)
-                btn.style.borderColor = isFlash ? "#10b981" : "#d1d5db";
-                btn.style.borderWidth = (isFlash || isActive) ? "4px" : "1px";
-                btn.style.backgroundColor = frac > 0 ? `rgba(59,130,246,${frac * 0.25})` : "transparent";
+// KEYBOARD INPUT
+const onKey = (e) => {
+    if (e.code === "Escape") {
+        if (locked || softCap) {
+            stopCapture();
+        }
+    }
+};
 
-                if (textSpan) {
-                    textSpan.textContent = escapeString(groupChars(dir));
-                }
-            });
+// POINTER LOCK CONTROL
+const startCapture = () => {
+    if (locked || softCap) return;
+    if (!centreButton) return;
+    softCap = false;
+    // Use body for pointer lock request for broader capture area
+    if (document.body.requestPointerLock) {
+        document.body.requestPointerLock();
+    } else {
+        console.warn("Pointer Lock API not fully supported. Using soft capture.");
+        softCap = true; // Fallback
+        updateUI();
+    }
+};
 
-            // Update Centre Button State
-            centreButton.classList.toggle("locked", locked);
-            centreButton.classList.toggle("soft-cap", softCap && !locked);
+const stopCapture = () => {
+    if (document.pointerLockElement === document.body) {
+            document.exitPointerLock();
+    }
+    // Reset states regardless of lock status on explicit stop
+    locked = false;
+    softCap = false;
+    path = [];
+    progress = { up: 0, right: 0, down: 0, left: 0 };
+    accum = { x: 0, y: 0 };
+    updateUI();
+};
 
-            // Update Threshold Display
-            thresholdValue.textContent = threshold;
+// Pointer lock event handlers
+const onLockChange = () => {
+    const isActive = document.pointerLockElement === document.body;
+    if (isActive) {
+        locked = true;
+        softCap = false;
+        // Clear state on successful lock
+        path = [];
+        progress = { up: 0, right: 0, down: 0, left: 0 };
+        accum = { x: 0, y: 0 };
+    } else {
+        // If lock was active and is now inactive, ensure cleanup
+        if (locked) {
+            stopCapture(); // Resets state and updates UI
+            return; // Avoid double UI update
+        }
+    }
+    updateUI();
+};
+
+const onLockError = (e) => {
+    console.error("Pointer lock failed: ", e);
+    locked = false;
+    softCap = true; // Attempt soft capture as fallback
+    updateUI();
+};
+
+// Global click handler (for exiting capture)
+    const onMouseDown = (e) => {
+    // If centre button clicked, let its handler manage capture start
+    if (centreButton && centreButton.contains(e.target)) return;
+    // If anywhere else is clicked while active, stop capture
+    if (locked || softCap) {
+        stopCapture();
+    }
+};
+
+// MOUSE MOVEMENT
+const onMove = (e) => {
+    if (!locked && !softCap) return;
+
+    accum.x += e.movementX;
+    accum.y += e.movementY;
+    const { x, y } = accum;
+    const absX = Math.abs(x);
+    const absY = Math.abs(y);
+
+    if (absX === 0 && absY === 0) return; // No change
+
+    // Determine direction and delta
+    let dir;
+    let delta;
+    if (absX > absY) {
+        dir = x > 0 ? "right" : "left";
+        delta = absX;
+    } else {
+        dir = y > 0 ? "down" : "up";
+        delta = absY;
+    }
+
+    const frac = Math.min(delta / threshold, 1);
+
+    // Update progress only for the dominant direction
+    progress = { up: 0, right: 0, down: 0, left: 0, [dir]: frac };
+
+    if (delta >= threshold) {
+        accept(dir);
+    } else {
+        updateUI(); // Update progress visualization
+    }
+};
+
+// INITIALIZATION
+function init() {
+        // Load settings from localStorage
+        const savedThreshold = localStorage.getItem(LS_THRESHOLD_KEY);
+        if (savedThreshold !== null) {
+            threshold = Number(savedThreshold);
+        }
+        const savedCharSet = localStorage.getItem(LS_CHARSET_KEY);
+        if (savedCharSet !== null) {
+            rawSet = savedCharSet; // Load the raw string, it will be processed later
         }
 
-        // ACCEPT MOVE
-        const accept = (dir) => {
-            path.push(dir);
-            progress = { up: 0, right: 0, down: 0, left: 0 };
-            accum = {x: 0, y: 0};
+        // Add Event Listeners
+    document.addEventListener("pointerlockchange", onLockChange);
+    document.addEventListener("pointerlockerror", onLockError);
+    document.addEventListener("mousedown", onMouseDown);
+    window.addEventListener("keydown", onKey);
+    window.addEventListener("mousemove", onMove);
 
-            // Flash effect
-            flashDir = dir;
-            clearTimeout(flashTimeout);
-            flashTimeout = setTimeout(() => {
-                flashDir = null;
-                updateUI();
-            }, 200);
+    centreButton.addEventListener("mousedown", (e) => {
+        e.stopPropagation();
+        startCapture();
+    });
 
-            if (path.length === movesPerChar) {
-                const ch = charSet[indexForPath(path)];
-                // Handle backspace
-                if (ch === '\0') {
-                    if (output.length > 0) {
-                        output = output.slice(0, -1);
-                    }
-                } else {
-                    output += ch;
-                }
-                path = [];
-            }
-            updateUI();
-        };
+    thresholdSlider.addEventListener("input", (e) => {
+        threshold = Number(e.target.value);
+        localStorage.setItem(LS_THRESHOLD_KEY, threshold); // Save threshold
+        updateUI(); // Update threshold display immediately
+    });
 
-        // COPY FUNCTIONALITY
-        const copyOutput = async () => {
-            if (!output) return; // Don't copy if empty
-            try {
-                await navigator.clipboard.writeText(output);
-                copyButton.textContent = 'Copied!';
-                setTimeout(() => {
-                    copyButton.textContent = 'Copy';
-                }, 1500); // Reset text after 1.5 seconds
-            } catch (err) {
-                console.error('Failed to copy text: ', err);
-                // Optionally show an error message to the user
-            }
-        };
+    // Options Toggle
+    optionsHeader.addEventListener("click", () => {
+            optionsHeader.classList.toggle("collapsed");
+            optionsContent.classList.toggle("collapsed");
+    });
 
-        // CLEAR FUNCTIONALITY
-        const clearOutput = () => {
-            if (output && window.confirm("Are you sure you want to clear the output?")) {
-                output = "";
-                updateUI();
-            }
-        };
+    // Function to check character set length and update warning
+    const checkCharSetLength = (currentValue) => {
+        const requiredLength = 4 ** movesPerChar;
+        const isShort = currentValue.length < requiredLength;
+        charSetInput.classList.toggle("warning", isShort);
+        charSetWarning.classList.toggle("visible", isShort);
+    };
 
-        // KEYBOARD INPUT
-        const onKey = (e) => {
-            if (e.code === "Escape") {
-                if (locked || softCap) {
-                   stopCapture();
-                }
-            }
-        };
+    // Auto-update Character Set on Input (debounced)
+    const updateCharSetFromInput = debounce(() => {
+        let newRawSet = unescapeString(charSetInput.value);
+        console.log(charSetInput.value);
+        const requiredLength = 4 ** movesPerChar;
 
-        // POINTER LOCK CONTROL
-        const startCapture = () => {
-            if (locked || softCap) return;
-            if (!centreButton) return;
-            softCap = false;
-            // Use body for pointer lock request for broader capture area
-            if (document.body.requestPointerLock) {
-                document.body.requestPointerLock();
-            } else {
-                console.warn("Pointer Lock API not fully supported. Using soft capture.");
-                softCap = true; // Fallback
-                updateUI();
-            }
-        };
-
-        const stopCapture = () => {
-            if (document.pointerLockElement === document.body) {
-                 document.exitPointerLock();
-            }
-            // Reset states regardless of lock status on explicit stop
-            locked = false;
-            softCap = false;
-            path = [];
-            progress = { up: 0, right: 0, down: 0, left: 0 };
-            accum = { x: 0, y: 0 };
-            updateUI();
-        };
-
-        // Pointer lock event handlers
-        const onLockChange = () => {
-            const isActive = document.pointerLockElement === document.body;
-            if (isActive) {
-                locked = true;
-                softCap = false;
-                // Clear state on successful lock
-                path = [];
-                progress = { up: 0, right: 0, down: 0, left: 0 };
-                accum = { x: 0, y: 0 };
-            } else {
-                // If lock was active and is now inactive, ensure cleanup
-                if (locked) {
-                   stopCapture(); // Resets state and updates UI
-                   return; // Avoid double UI update
-                }
-            }
-            updateUI();
-        };
-
-        const onLockError = (e) => {
-            console.error("Pointer lock failed: ", e);
-            locked = false;
-            softCap = true; // Attempt soft capture as fallback
-            updateUI();
-        };
-
-        // Global click handler (for exiting capture)
-         const onMouseDown = (e) => {
-            // If centre button clicked, let its handler manage capture start
-            if (centreButton && centreButton.contains(e.target)) return;
-            // If anywhere else is clicked while active, stop capture
-            if (locked || softCap) {
-                stopCapture();
-            }
-        };
-
-        // MOUSE MOVEMENT
-        const onMove = (e) => {
-            if (!locked && !softCap) return;
-
-            accum.x += e.movementX;
-            accum.y += e.movementY;
-            const { x, y } = accum;
-            const absX = Math.abs(x);
-            const absY = Math.abs(y);
-
-            if (absX === 0 && absY === 0) return; // No change
-
-            // Determine direction and delta
-            let dir;
-            let delta;
-            if (absX > absY) {
-                dir = x > 0 ? "right" : "left";
-                delta = absX;
-            } else {
-                dir = y > 0 ? "down" : "up";
-                delta = absY;
-            }
-
-            const frac = Math.min(delta / threshold, 1);
-
-            // Update progress only for the dominant direction
-            progress = { up: 0, right: 0, down: 0, left: 0, [dir]: frac };
-
-            if (delta >= threshold) {
-                accept(dir);
-            } else {
-                updateUI(); // Update progress visualization
-            }
-        };
-
-        // INITIALIZATION
-        function init() {
-             // Load settings from localStorage
-             const savedThreshold = localStorage.getItem(LS_THRESHOLD_KEY);
-             if (savedThreshold !== null) {
-                 threshold = Number(savedThreshold);
-             }
-             const savedCharSet = localStorage.getItem(LS_CHARSET_KEY);
-             if (savedCharSet !== null) {
-                 rawSet = savedCharSet; // Load the raw string, it will be processed later
-             }
-
-             // Add Event Listeners
-            document.addEventListener("pointerlockchange", onLockChange);
-            document.addEventListener("pointerlockerror", onLockError);
-            document.addEventListener("mousedown", onMouseDown);
-            window.addEventListener("keydown", onKey);
-            window.addEventListener("mousemove", onMove);
-
-            centreButton.addEventListener("mousedown", (e) => {
-                e.stopPropagation();
-                startCapture();
-            });
-
-            thresholdSlider.addEventListener("input", (e) => {
-                threshold = Number(e.target.value);
-                localStorage.setItem(LS_THRESHOLD_KEY, threshold); // Save threshold
-                updateUI(); // Update threshold display immediately
-            });
-
-            // Options Toggle
-            optionsHeader.addEventListener("click", () => {
-                 optionsHeader.classList.toggle("collapsed");
-                 optionsContent.classList.toggle("collapsed");
-            });
-
-            // Function to check character set length and update warning
-            const checkCharSetLength = (currentValue) => {
-                const requiredLength = 4 ** movesPerChar;
-                const isShort = currentValue.length < requiredLength;
-                charSetInput.classList.toggle("warning", isShort);
-                charSetWarning.classList.toggle("visible", isShort);
-            };
-
-            // Auto-update Character Set on Input (debounced)
-            const updateCharSetFromInput = debounce(() => {
-                let newRawSet = unescapeString(charSetInput.value);
-                console.log(charSetInput.value);
-                const requiredLength = 4 ** movesPerChar;
-
-                // Truncate if exceeds limit
-                if (newRawSet.length > requiredLength) {
-                    newRawSet = newRawSet.slice(0, requiredLength);
-                    charSetInput.value = escapeString(newRawSet); // Update textarea visually
-                }
-
-                checkCharSetLength(newRawSet); // Update warning state
-
-                if (newRawSet !== rawSet) {
-                    rawSet = newRawSet;
-                    localStorage.setItem(LS_CHARSET_KEY, rawSet); // Save raw character set
-                    calculateCharSet(); // Recalculate the padded set
-                    updateUI(); // Update button texts etc.
-                }
-            }, 100); // 100ms delay
-
-            charSetInput.addEventListener("input", updateCharSetFromInput);
-
-            // Add listeners for copy/clear buttons
-            copyButton.addEventListener("click", copyOutput);
-            clearButton.addEventListener("click", clearOutput);
-
-            // Reset Settings Button
-            resetSettingsButton.addEventListener("click", () => {
-                if (window.confirm("Are you sure you want to reset settings to default?")) {
-                    threshold = defaultThreshold;
-                    rawSet = defaultRawSet;
-
-                    // Update inputs
-                    thresholdSlider.value = threshold;
-                    charSetInput.value = escapeString(rawSet);
-
-                    // Clear storage
-                    localStorage.removeItem(LS_THRESHOLD_KEY);
-                    localStorage.removeItem(LS_CHARSET_KEY);
-
-                    // Recalculate and update UI
-                    checkCharSetLength(rawSet); // Update warning state
-                    calculateCharSet();
-                    updateUI();
-                }
-            });
-
-            // Initial UI Setup
-            charSetInput.value = escapeString(rawSet); // Populate textarea
-            thresholdSlider.value = threshold; // Set slider initial position
-            thresholdValue.textContent = threshold;
-            checkCharSetLength(rawSet); // Initial check for warning
-            calculateCharSet(); // Calculate initial padded charSet
-            updateUI();
+        // Truncate if exceeds limit
+        if (newRawSet.length > requiredLength) {
+            newRawSet = newRawSet.slice(0, requiredLength);
+            charSetInput.value = escapeString(newRawSet); // Update textarea visually
         }
 
-        // Run init when the DOM is ready
-        document.addEventListener('DOMContentLoaded', init);
+        checkCharSetLength(newRawSet); // Update warning state
+
+        if (newRawSet !== rawSet) {
+            rawSet = newRawSet;
+            localStorage.setItem(LS_CHARSET_KEY, rawSet); // Save raw character set
+            calculateCharSet(); // Recalculate the padded set
+            updateUI(); // Update button texts etc.
+        }
+    }, 100); // 100ms delay
+
+    charSetInput.addEventListener("input", updateCharSetFromInput);
+
+    // Add listeners for copy/clear buttons
+    copyButton.addEventListener("click", copyOutput);
+    clearButton.addEventListener("click", clearOutput);
+
+    // Reset Settings Button
+    resetSettingsButton.addEventListener("click", () => {
+        if (window.confirm("Are you sure you want to reset settings to default?")) {
+            threshold = defaultThreshold;
+            rawSet = defaultRawSet;
+
+            // Update inputs
+            thresholdSlider.value = threshold;
+            charSetInput.value = escapeString(rawSet);
+
+            // Clear storage
+            localStorage.removeItem(LS_THRESHOLD_KEY);
+            localStorage.removeItem(LS_CHARSET_KEY);
+
+            // Recalculate and update UI
+            checkCharSetLength(rawSet); // Update warning state
+            calculateCharSet();
+            updateUI();
+        }
+    });
+
+    // Initial UI Setup
+    charSetInput.value = escapeString(rawSet); // Populate textarea
+    thresholdSlider.value = threshold; // Set slider initial position
+    thresholdValue.textContent = threshold;
+    checkCharSetLength(rawSet); // Initial check for warning
+    calculateCharSet(); // Calculate initial padded charSet
+    updateUI();
+}
+
+// Run init when the DOM is ready
+document.addEventListener('DOMContentLoaded', init);
 
     </script>
 </body>
