@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fast Cursor Typer</title>
+    <meta name="description" content="Want to write with your mouse? This website lets you type by just flicking your mouse in different directions. With a bit of practice, this allows for quite fast typing!">
     <style>
 /* Basic Reset & Font */
 body {
@@ -364,18 +365,21 @@ footer a {
         <div class="card">
              <div class="options-card-header collapsed" id="options-header">
                 <h3>Options</h3>
-                 <!-- Chevron Down SVG -->
                 <svg class="toggle-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                 </svg>
             </div>
             <div class="card-content options-card-content collapsed" id="options-content">
                 <label>
-                    <span>Sensitivity (pixels): <span id="threshold-value">50</span></span>
+                    <span title="How fast the next direction gets accepted.">Sensitivity (pixels): <span id="threshold-value">50</span></span>
                     <input id="threshold-slider" type="range" min="1" max="100" step="1" value="50">
                 </label>
                 <label>
-                    <span>Available Characters (Supports \n, \t, \b, \\):</span>
+                    <span title="How much time has to pass before a new direction input can be made.">Input Delay (ms): <span id="delay-value">0</span></span>
+                    <input id="delay-slider" type="range" min="0" max="100" step="1" value="0">
+                </label>
+                <label>
+                    <span title="Characters that can be used. The order determines the input directions for the characters. Supports newline (\n), tab (\t), backspace (\b), and normal backslash (\\).">Available Characters (Supports \n, \t, \b, \\):</span>
                     <textarea id="char-set-input"></textarea>
                     <p id="char-set-warning" class="char-set-warning">Warning: Character set is not fully defined, remaining characters will be filled with ' '.</p>
                 </label>
@@ -393,7 +397,8 @@ footer a {
 const movesPerChar = 3;
 const dirOrder = ["up", "right", "down", "left"];
 const defaultThreshold = 50;
-const defaultRawSet = "abcdefghijklmnopqrstuvwxyz0123456789\n,.!?-@#$%&*;:'\"/()[]{}<>\0";
+const defaultRawSet = "abcdefghijklmnopqrstuvwxyz0123456789\n,.!?-@#$%&*;:'\"/()[]{}<>\0  ";
+const defaultInputDelay = 50; // Default delay is 0ms
 
 // STATE
 let path = [];
@@ -405,6 +410,8 @@ let flashDir = null;
 let threshold = defaultThreshold; // Start with default
 let rawSet = defaultRawSet; // Start with default
 let charSet = ''; // Will be calculated initially and on update
+let inputDelay = defaultInputDelay; // Start with default delay
+let isDelayActive = false; // Track if delay is currently active
 let accum = { x: 0, y: 0 };
 let flashTimeout = null;
 // Touch state
@@ -414,12 +421,15 @@ let activeTouchId = null;
 // localStorage keys
 const LS_THRESHOLD_KEY = 'fastCursorTyper_threshold';
 const LS_CHARSET_KEY = 'fastCursorTyper_charSet';
+const LS_DELAY_KEY = 'fastCursorTyper_inputDelay';
 
 // DOM Elements
 const centreButton = document.getElementById("btn-centre");
 const outputDisplay = document.getElementById("output-display");
 const thresholdSlider = document.getElementById("threshold-slider");
 const thresholdValue = document.getElementById("threshold-value");
+const delaySlider = document.getElementById("delay-slider");
+const delayValue = document.getElementById("delay-value");
 const dirButtons = {};
 const dirTexts = {};
 dirOrder.forEach(dir => {
@@ -532,6 +542,8 @@ function updateUI() {
 
     // Update Threshold Display
     thresholdValue.textContent = threshold;
+    // Update Delay Display
+    delayValue.textContent = inputDelay;
 }
 
 // ACCEPT MOVE
@@ -539,6 +551,14 @@ const accept = (dir) => {
     path.push(dir);
     progress = { up: 0, right: 0, down: 0, left: 0 };
     accum = {x: 0, y: 0};
+
+    // Start input delay if delay > 0
+    if (inputDelay > 0) {
+        isDelayActive = true;
+        setTimeout(() => {
+            isDelayActive = false;
+        }, inputDelay);
+    }
 
     // Flash effect
     flashDir = dir;
@@ -705,19 +725,27 @@ const onMove = (e) => {
         if (!touch) return; // Active touch not found
 
         // Calculate total movement from the start point
-        accum.x = touch.clientX - touchStartX;
-        accum.y = touch.clientY - touchStartY;
-
+        if (!isDelayActive) {
+            accum.x += touch.clientX - touchStartX;
+            accum.y += touch.clientY - touchStartY;
+        }
+        touchStartX = touch.clientX;
+        touchStartY = touch.clientY;
     }
     // Handle mouse movement
     else if (e.type === 'mousemove' && locked) {
-         // Accumulate mouse movement delta (existing logic)
-        accum.x += e.movementX;
-        accum.y += e.movementY;
+        // Accumulate mouse movement delta (existing logic)
+        if (!isDelayActive) {
+            accum.x += e.movementX;
+            accum.y += e.movementY;
+        }
     } else {
         return; // Ignore if not locked (mouse) or not active touch
     }
 
+    // Ignore movement if input delay is active
+    // only do it here, so the touch touchStart is still updated correctly above
+    if (isDelayActive) return;
 
     const { x, y } = accum; // Use accumulated values
     const absX = Math.abs(x);
@@ -743,10 +771,6 @@ const onMove = (e) => {
 
     if (delta >= threshold) {
         accept(dir);
-        if (touch) {
-            touchStartX = touch.clientX;
-            touchStartY = touch.clientY;
-        }
     } else {
         updateUI(); // Update progress visualization
     }
@@ -763,6 +787,10 @@ function init() {
         if (savedCharSet !== null) {
             rawSet = savedCharSet; // Load the raw string, it will be processed later
         }
+        const savedDelay = localStorage.getItem(LS_DELAY_KEY);
+        if (savedDelay !== null) {
+            inputDelay = Number(savedDelay);
+        }
 
         // Add Event Listeners
     document.addEventListener("pointerlockchange", onLockChange);
@@ -773,7 +801,7 @@ function init() {
     window.addEventListener("keydown", onKey);
     // Add listeners for both mouse and touch movement
     window.addEventListener("mousemove", onMove);
-    window.addEventListener("touchmove", onMove, { passive: false }); // Prevent default scroll
+    window.addEventListener("touchmove", onMove, { passive: false }); // Prevent default to avoid potential conflicts
 
     // Add touchend/touchcancel listeners to stop capture
     window.addEventListener("touchend", (e) => {
@@ -808,6 +836,12 @@ function init() {
         threshold = Number(e.target.value);
         localStorage.setItem(LS_THRESHOLD_KEY, threshold); // Save threshold
         updateUI(); // Update threshold display immediately
+    });
+
+    delaySlider.addEventListener("input", (e) => {
+        inputDelay = Number(e.target.value);
+        localStorage.setItem(LS_DELAY_KEY, inputDelay); // Save delay
+        updateUI(); // Update delay display immediately
     });
 
     // Options Toggle
@@ -856,14 +890,17 @@ function init() {
         if (window.confirm("Are you sure you want to reset settings to default?")) {
             threshold = defaultThreshold;
             rawSet = defaultRawSet;
+            inputDelay = defaultInputDelay;
 
             // Update inputs
             thresholdSlider.value = threshold;
             charSetInput.value = escapeString(rawSet);
+            delaySlider.value = inputDelay;
 
             // Clear storage
             localStorage.removeItem(LS_THRESHOLD_KEY);
             localStorage.removeItem(LS_CHARSET_KEY);
+            localStorage.removeItem(LS_DELAY_KEY);
 
             // Recalculate and update UI
             checkCharSetLength(rawSet); // Update warning state
@@ -876,6 +913,8 @@ function init() {
     charSetInput.value = escapeString(rawSet); // Populate textarea
     thresholdSlider.value = threshold; // Set slider initial position
     thresholdValue.textContent = threshold;
+    delaySlider.value = inputDelay; // Set delay slider initial position
+    delayValue.textContent = inputDelay;
     checkCharSetLength(rawSet); // Initial check for warning
     calculateCharSet(); // Calculate initial padded charSet
     updateUI();
