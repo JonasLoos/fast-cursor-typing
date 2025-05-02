@@ -735,7 +735,6 @@ const onMove = (e) => {
         // Accumulate mouse movement delta (existing logic)
         // ignore first mouse input, as there the movement data may be wrong
         if (!isDelayActive && !isFirstMouseInput) {
-            console.log(`mov: ${accum.x}, ${accum.y} += ${e.movementX}, ${e.movementY}`)
             accum.x += e.movementX;
             accum.y += e.movementY;
         }
