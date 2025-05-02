@@ -396,9 +396,9 @@ footer a {
 // CONFIG
 const movesPerChar = 3;
 const dirOrder = ["up", "right", "down", "left"];
-const defaultThreshold = 50;
+const defaultThreshold = 50; // px
 const defaultRawSet = "abcdefghijklmnopqrstuvwxyz0123456789\n,.!?-@#$%&*;:'\"/()[]{}<>\0  ";
-const defaultInputDelay = 50; // Default delay is 0ms
+const defaultInputDelay = 50; // ms
 
 // STATE
 let path = [];
@@ -414,6 +414,7 @@ let inputDelay = defaultInputDelay; // Start with default delay
 let isDelayActive = false; // Track if delay is currently active
 let accum = { x: 0, y: 0 };
 let flashTimeout = null;
+let isFirstMouseInput = true;
 // Touch state
 let touchStartX = null;
 let touchStartY = null;
@@ -639,9 +640,10 @@ const startCapture = (e) => {
         }
     }
 
-    // Handle mouse click (existing logic)
+    // Handle mouse click
     softCap = false;
     activeTouchId = null; // Ensure touch state is reset if mouse is used
+    isFirstMouseInput = true;
     // Use body for pointer lock request for broader capture area
     if (document.body.requestPointerLock) {
         document.body.requestPointerLock();
@@ -675,10 +677,6 @@ const onLockChange = () => {
     if (isActive) {
         locked = true;
         softCap = false;
-        // Clear state on successful lock
-        path = [];
-        progress = { up: 0, right: 0, down: 0, left: 0 };
-        accum = { x: 0, y: 0 };
     } else {
         // If lock was active and is now inactive, ensure cleanup
         if (locked) {
@@ -735,10 +733,13 @@ const onMove = (e) => {
     // Handle mouse movement
     else if (e.type === 'mousemove' && locked) {
         // Accumulate mouse movement delta (existing logic)
-        if (!isDelayActive) {
+        // ignore first mouse input, as there the movement data may be wrong
+        if (!isDelayActive && !isFirstMouseInput) {
+            console.log(`mov: ${accum.x}, ${accum.y} += ${e.movementX}, ${e.movementY}`)
             accum.x += e.movementX;
             accum.y += e.movementY;
         }
+        isFirstMouseInput = false;
     } else {
         return; // Ignore if not locked (mouse) or not active touch
     }
