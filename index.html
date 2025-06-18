@@ -94,7 +94,6 @@ body {
     justify-content: center;
     border-radius: 0.375rem;
     padding: 0.5rem 1rem;
-    font-size: 0.875rem;
     font-weight: 500;
     cursor: pointer;
     transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
@@ -697,7 +696,7 @@ const onLockError = (e) => {
 // Global click/touch handler (for exiting capture)
 const onDown = (e) => {
     // If centre button is the target, let its handler manage capture start
-    if (centreButton && centreButton.contains(e.target)) return;
+    if (centreButton?.contains(e.target)) return;
     // If anywhere else is clicked/touched while active, stop capture
     if (locked || softCap) {
         stopCapture();
@@ -714,9 +713,9 @@ const onMove = (e) => {
     if (e.type === 'touchmove' && activeTouchId !== null) {
         e.preventDefault(); // Prevent scrolling
         // Find the active touch
-        for (let i = 0; i < e.touches.length; i++) {
-            if (e.touches[i].identifier === activeTouchId) {
-                touch = e.touches[i];
+        for (const t of e.touches) {
+            if (t.identifier === activeTouchId) {
+                touch = t;
                 break;
             }
         }
@@ -807,8 +806,8 @@ function init() {
     window.addEventListener("touchend", (e) => {
         if (softCap && activeTouchId !== null) {
             // Check if the touch that ended was the active one
-            for (let i = 0; i < e.changedTouches.length; i++) {
-                if (e.changedTouches[i].identifier === activeTouchId) {
+            for (const t of e.changedTouches) {
+                if (t.identifier === activeTouchId) {
                     stopCapture();
                     break;
                 }
@@ -818,8 +817,8 @@ function init() {
     window.addEventListener("touchcancel", (e) => {
          if (softCap && activeTouchId !== null) {
              // Similar check for cancelled touches
-            for (let i = 0; i < e.changedTouches.length; i++) {
-                if (e.changedTouches[i].identifier === activeTouchId) {
+            for (const t of e.changedTouches) {
+                if (t.identifier === activeTouchId) {
                     stopCapture();
                     break;
                 }
